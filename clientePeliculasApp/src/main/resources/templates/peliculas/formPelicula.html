@@ -11,6 +11,26 @@
             min-height: 150px; /* Establece una altura mínima para el textarea */
         }
     </style>
+
+    <script th:inline="javascript">
+        function addActor() {
+            /* This function will submit the form to the same URL with a parameter to add a new actor */
+            let form = document.querySelector('form');
+            let action = form.action;
+            action += '?addActor=true';
+            form.action = action;
+            form.submit();
+        }
+
+        function removeActor(index) {
+            /* This function will submit the form to the same URL with a parameter to remove the actor */
+            let form = document.querySelector('form');
+            let action = form.action;
+            action += '?removeActor=' + index;
+            form.action = action;
+            form.submit();
+        }
+    </script>
 </head>
 <body>
 
@@ -67,6 +87,34 @@
             <textarea class="form-textarea" th:field="*{sinopsis}" id="sinopsis" name="sinopsis"
                       placeholder="Escriba la sinopsis de la pelicula" required="required" rows="5"></textarea>
         </div>
+
+        <div id="actores-container">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Identificador</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha de Nacimiento</th>
+                    <th scope="col">País</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="actor, iterStat : *{actores}">
+                    <td th:text="${actor.idActor}"></td>
+                    <td th:text="*{actores[__${iterStat.index}__].nombre}" placeholder="Nombre del actor"/></td>
+                    <td th:text="*{actores[__${iterStat.index}__].fcNacimiento}" placeholder="Fecha de nacimiento"/></td>
+                    <td th:text="*{actores[__${iterStat.index}__].pais}" placeholder="País"/></td>
+                    <td>
+                        <button type="button" class="btn btn-danger" th:onclick="|removeActor(${iterStat.index})|">Eliminar</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" onclick="addActor()">Añadir Actor</button>
+        </div>
+
+
         <button type="submit" class="btn btn-dark">Guardar</button>
         <input type="hidden" th:field="*{idPelicula}" />
     </form>

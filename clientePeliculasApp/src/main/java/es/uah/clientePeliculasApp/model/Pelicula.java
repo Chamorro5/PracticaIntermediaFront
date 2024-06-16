@@ -47,4 +47,12 @@ public class Pelicula {
         this.imagen = imagen;
         this.actores = new ArrayList<>();
     }
+
+    public void addActor(Actor actor) {
+        this.actores.add(actor);
+    }
+
+    public void removeActor(Actor actor) {
+        this.actores.remove(actor);
+    }
 }

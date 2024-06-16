@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>PeliculasApp | Aplicación de gestión de cursos</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2 class="text-secondary border border-success border-top-0 border-left-0 border-right-0">Búsqueda de Actores</h2>
+    <form th:action="@{/cactores/nombre}" method="get">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Titulo</label>
+            <input type="text" class="form-control" id="nombre" name="nombre"
+                   placeholder="Escriba el nombre del actor">
+        </div>
+        <button type="submit" class="btn btn-success">Buscar por Actor</button>
+    </form>
+    <hr>
+
+    <hr>
+    <a class="btn btn-primary" role="button" th:href="@{/cpeliculas}">Ir a Inicio</a>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

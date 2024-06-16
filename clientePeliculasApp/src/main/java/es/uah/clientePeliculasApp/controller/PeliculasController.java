@@ -38,7 +38,7 @@ public class PeliculasController {
     }
 
     @GetMapping("/listado")
-    public String listadoCursos(Model model, @RequestParam(name="page", defaultValue="0") int page) {
+    public String listadoPeliculas(Model model, @RequestParam(name="page", defaultValue="0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
         Page<Pelicula> listado = peliculasService.buscarTodos(pageable);
         PageRender<Pelicula> pageRender = new PageRender<Pelicula>("/cpeliculas/listado", listado);

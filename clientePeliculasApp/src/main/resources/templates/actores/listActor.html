@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>PeliculasApp | Aplicación de gestión de peliculas</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h2 th:text="${titInicio}" class="card-header"></h2>
+        <div class="card-body">
+            <div th:if="${msg != null}" class='alert alert-success' th:text="${msg}" role='alert'></div>
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Identificador</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha de Nacimiento</th>
+                    <th scope="col">País</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="actor : ${listadoActores}">
+                    <td th:text="${actor.idActor}"></td>
+                    <td th:text="${actor.nombre}"></td>
+                    <td th:text="${actor.fcNacimiento}"></td>
+                    <td th:text="${actor.pais}"></td>
+                    <td>
+                        <a th:href="@{/cactores/editar/{id}  (id=${actor.idActor})  }" th:text="'editar'" class="btn btn-success btn-sm" role="button" title="Editar el curso."><i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
+                        <a th:href="@{/cpeliculas/borrar/{id}  (id=${actor.idActor})   }" th:text="'borrar'" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Eliminar el curso."><i class="fas fa-trash" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <nav th:replace="paginator-nav :: paginator"></nav>
+
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-primary" role="button" th:href="@{/cpeliculas/}">Ir a Inicio</a>
+</div> <!-- /container -->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
