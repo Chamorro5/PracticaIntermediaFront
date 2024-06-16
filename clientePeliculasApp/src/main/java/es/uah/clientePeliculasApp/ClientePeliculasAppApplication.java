@@ -14,9 +14,8 @@ public class ClientePeliculasAppApplication {
 	}
 
 	@Bean
-	public RestTemplate template(){
-		RestTemplate template = new RestTemplate();
-		return template();
+	public RestTemplate template() {
+		return new RestTemplate();
 	}
 
 }

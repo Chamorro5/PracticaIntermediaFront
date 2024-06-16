@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CursosApp | Aplicación de gestión de cursos</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2 class="text-secondary border border-success border-top-0 border-left-0 border-right-0">Búsqueda de Peliculas</h2>
+    <form th:action="@{/cpeliculas/titulo}" method="get">
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Titulo</label>
+            <input type="text" class="form-control" id="titulo" name="titulo"
+                   placeholder="Escriba el nombre del curso">
+        </div>
+        <button type="submit" class="btn btn-success">Buscar por Titulo</button>
+    </form>
+    <hr>
+    <form th:action="@{/cpeliculas/genero}" method="get">
+        <div class="mb-3">
+            <select class="form-select" name="genero" id="genero">
+                <option selected>Seleccionar genero</option>
+                <option th:value="'Aventura'">Aventura</option>
+                <option th:value="'Ciencia Ficcion'">Ciencia Ficcion</option>
+                <option th:value="'Comedia'">Comedia</option>
+                <option th:value="'Drama'">Drama</option>
+                <option th:value="'Documental'">Documental</option>
+                <option th:value="'Policiaco'">Policiaco</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Buscar por Genero</button>
+    </form>
+    <hr>
+    <form th:action="@{/cpeliculas/direccion}" method="get">
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Nombre de la persona encargada de Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion"
+                   placeholder="Escriba nombre de la persona encargada de Dirección de la pelicula">
+        </div>
+        <button type="submit" class="btn btn-success">Buscar por persona encargada de Dirección</button>
+    </form>
+
+    <hr>
+    <a class="btn btn-primary" role="button" th:href="@{/cpeliculas}">Ir a Inicio</a>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

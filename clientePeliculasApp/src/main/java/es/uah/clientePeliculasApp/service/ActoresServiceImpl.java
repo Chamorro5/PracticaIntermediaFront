@@ -20,7 +20,7 @@ public class ActoresServiceImpl implements IActoresService{
     @Autowired
     RestTemplate template;
 
-    String url = "http://localhost:8081/actores";
+    String url = "http://localhost:8090/actores";
     @Override
     public Page<Actor> buscarTodos(Pageable pageable) {
         Actor[] actores = template.getForObject(url, Actor[].class);
@@ -60,10 +60,10 @@ public class ActoresServiceImpl implements IActoresService{
 
     @Override
     public void guardarActor(Actor actor) {
-        if (actor.getId() != null && actor.getId() > 0) {
+        if (actor.getIdActor() != null && actor.getIdActor() > 0) {
             template.put(url, actor);
         } else {
-            actor.setId(0);
+            actor.setIdActor(0);
             template.postForObject(url, actor, String.class);
         }
     }
@@ -75,7 +75,7 @@ public class ActoresServiceImpl implements IActoresService{
 
     @Override
     public void actualizarActor(Actor actor) {
-        if (actor.getId() != null && actor.getId() > 0) {
+        if (actor.getIdActor() != null && actor.getIdActor() > 0) {
             template.put(url, actor);
         }
     }

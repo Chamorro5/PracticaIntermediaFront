@@ -1,16 +1,19 @@
 package es.uah.clientePeliculasApp.model;
 
-import jakarta.persistence.Column;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter
 @Setter
+@NoArgsConstructor // Genera el constructor sin argumentos
 public class Pelicula {
-    private Integer id;
+    private Integer idPelicula;
     private String titulo;
     private Integer anyo;
     private Integer duracion;
@@ -19,11 +22,21 @@ public class Pelicula {
     private String genero;
     private String sinopsis;
     private String imagen;
-    private List<Actor> actores;
+    private List<Actor> actores = new ArrayList<>(); // Inicializa la lista aquí
 
-    public Pelicula(Integer id, String titulo, Integer anyo, Integer duracion,
-                    String pais, String direccion, String genero, String sinopsis, String imagen ) {
-        this.id = id;
+    @JsonCreator // Constructor para la deserialización usando Jackson
+    public Pelicula(
+            @JsonProperty("id") Integer idPelicula,
+            @JsonProperty("titulo") String titulo,
+            @JsonProperty("anyo") Integer anyo,
+            @JsonProperty("duracion") Integer duracion,
+            @JsonProperty("pais") String pais,
+            @JsonProperty("direccion") String direccion,
+            @JsonProperty("genero") String genero,
+            @JsonProperty("sinopsis") String sinopsis,
+            @JsonProperty("imagen") String imagen
+    ) {
+        this.idPelicula = idPelicula;
         this.titulo = titulo;
         this.anyo = anyo;
         this.duracion = duracion;
@@ -33,8 +46,5 @@ public class Pelicula {
         this.sinopsis = sinopsis;
         this.imagen = imagen;
         this.actores = new ArrayList<>();
-    }
-
-    public Pelicula () {
     }
 }

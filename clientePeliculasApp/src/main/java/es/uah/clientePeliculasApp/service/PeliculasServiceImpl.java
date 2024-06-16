@@ -14,12 +14,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class PeliculasServiceImpl implements IPeliculasService{
+public class PeliculasServiceImpl implements IPeliculasService {
 
     @Autowired
     RestTemplate template;
 
-    String url = "http://localhost:8081/peliculas";
+    String url = "http://localhost:8090/peliculas";
 
     @Override
     public Page<Pelicula> buscarTodos(Pageable pageable) {
@@ -66,18 +66,18 @@ public class PeliculasServiceImpl implements IPeliculasService{
 
     @Override
     public Page<Pelicula> buscarPeliculasPorDireccion(String direccion, Pageable pageable) {
-        Pelicula[] cursos = template.getForObject(url + "/direccion/" + direccion, Pelicula[].class);
-        List<Pelicula> lista = Arrays.asList(cursos);
+        Pelicula[] peliculas = template.getForObject(url + "/direccion/" + direccion, Pelicula[].class);
+        List<Pelicula> lista = Arrays.asList(peliculas);
         Page<Pelicula> page = new PageImpl<>(lista, pageable, lista.size());
         return page;
     }
 
     @Override
     public void guardarPelicula(Pelicula pelicula) {
-        if (pelicula.getId() != null && pelicula.getId() > 0) {
+        if (pelicula.getIdPelicula() != null && pelicula.getIdPelicula() > 0) {
             template.put(url, pelicula);
         } else {
-            pelicula.setId(0);
+            pelicula.setIdPelicula(0);
             template.postForObject(url, pelicula, String.class);
         }
     }
@@ -89,7 +89,7 @@ public class PeliculasServiceImpl implements IPeliculasService{
 
     @Override
     public void actualizarPelicula(Pelicula pelicula) {
-        if (pelicula.getId() != null && pelicula.getId() > 0) {
+        if (pelicula.getIdPelicula() != null && pelicula.getIdPelicula() > 0) {
             template.put(url, pelicula);
         }
     }
