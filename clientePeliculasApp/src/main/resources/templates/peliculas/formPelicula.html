@@ -30,6 +30,17 @@
             form.action = action;
             form.submit();
         }
+
+        function updateImagePreview() {
+            const url = document.getElementById('imagen').value;
+            const img = document.getElementById('imagenPreview');
+            if (url) {
+                img.src = url;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+        }
     </script>
 </head>
 <body>
@@ -86,6 +97,16 @@
             <label for="sinopsis" class="form-label">Sinopsis</label>
             <textarea class="form-textarea" th:field="*{sinopsis}" id="sinopsis" name="sinopsis"
                       placeholder="Escriba la sinopsis de la pelicula" required="required" rows="5"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen" class="form-label">URL de la Imagen</label>
+            <input type="text" class="form-control" th:field="*{imagen}" id="imagen" name="imagen"
+                   placeholder="Ingrese la URL de la imagen" required="required" oninput="updateImagePreview()">
+        </div>
+
+        <div class="mb-3">
+            <img id="imagenPreview" src="" alt="Vista previa de la imagen" style="max-width: 100%; display: none;"/>
         </div>
 
         <div id="actores-container">

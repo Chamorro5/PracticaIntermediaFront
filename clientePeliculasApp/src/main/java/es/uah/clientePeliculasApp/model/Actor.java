@@ -23,7 +23,7 @@ public class Actor {
 
     @JsonCreator // Constructor para la deserialización usando Jackson
     public Actor(
-            @JsonProperty("id") Integer idActor,
+            @JsonProperty("idActor") Integer idActor,
             @JsonProperty("nombre") String nombre,
             @JsonProperty("fcNacimiento") LocalDate fcNacimiento,
             @JsonProperty("pais") String pais

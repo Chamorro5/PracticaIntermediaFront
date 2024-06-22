@@ -26,7 +26,7 @@ public class Pelicula {
 
     @JsonCreator // Constructor para la deserialización usando Jackson
     public Pelicula(
-            @JsonProperty("id") Integer idPelicula,
+            @JsonProperty("idPelicula") Integer idPelicula,
             @JsonProperty("titulo") String titulo,
             @JsonProperty("anyo") Integer anyo,
             @JsonProperty("duracion") Integer duracion,
