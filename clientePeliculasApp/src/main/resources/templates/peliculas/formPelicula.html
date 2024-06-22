@@ -31,6 +31,13 @@
             form.submit();
         }
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlField = document.getElementById('imagen').value;
+            if (urlField) {
+                updateImagePreview();
+            }
+        });
+
         function updateImagePreview() {
             const url = document.getElementById('imagen').value;
             const img = document.getElementById('imagenPreview');
@@ -60,20 +67,34 @@
             <input type="text" class="form-control" th:field="*{titulo}" id="titulo" name="titulo"
                    placeholder="Escriba el nombre del curso" required="required">
         </div>
-        <div class="mb-3">
-            <label for="anyo" class="form-label">Anyo</label>
-            <input type="number" class="form-control" th:field="*{anyo}" id="anyo" name="anyo"
-                   placeholder="Escriba la duración del curso en horas" required="required">
+
+        <div class="mb-3 row">
+            <div class="col-md-8">
+                <label for="imagen" class="form-label">URL de la Imagen</label>
+                <input type="text" class="form-control" th:field="*{imagen}" id="imagen" name="imagen"
+                       placeholder="Ingrese la URL de la imagen" required="required" oninput="updateImagePreview()">
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+                <img id="imagenPreview" src="" alt="Vista previa de la imagen" class="img-thumbnail" style="max-width: 100px; display: none;"/>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="duracion" class="form-label">Duración</label>
-            <input type="number" class="form-control" th:field="*{duracion}" id="duracion" name="duracion"
-                   placeholder="Escriba la duración del curso en horas" required="required">
-        </div>
-        <div class="mb-3">
-            <label for="pais" class="form-label">Pais</label>
-            <input type="text" class="form-control" th:field="*{pais}" id="pais" name="pais"
-                   placeholder="Escriba el nombre del profesor del curso" required="required">
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="anyo" class="form-label">Año</label>
+                <input type="number" class="form-control" th:field="*{anyo}" id="anyo" name="anyo"
+                       placeholder="Escriba el año de la película" required="required">
+            </div>
+            <div class="col-md-4">
+                <label for="duracion" class="form-label">Duración</label>
+                <input type="number" class="form-control" th:field="*{duracion}" id="duracion" name="duracion"
+                       placeholder="Escriba la duración en minutos" required="required">
+            </div>
+            <div class="col-md-4">
+                <label for="pais" class="form-label">País</label>
+                <input type="text" class="form-control" th:field="*{pais}" id="pais" name="pais"
+                       placeholder="Escriba el país de origen" required="required">
+            </div>
         </div>
         <div class="mb-3">
             <label for="direccion" class="form-label">Director</label>
@@ -82,6 +103,7 @@
         </div>
 
         <div class="mb-3">
+            <label for="genero" class="form-label">Genero</label>
             <select class="form-select" th:field="*{genero}" name="genero" id="genero">
                 <!-- <option th:value="" selected>Seleccionar categoría</option> -->
                 <option th:value="'Aventura'">Aventura</option>
@@ -99,17 +121,7 @@
                       placeholder="Escriba la sinopsis de la pelicula" required="required" rows="5"></textarea>
         </div>
 
-        <div class="mb-3">
-            <label for="imagen" class="form-label">URL de la Imagen</label>
-            <input type="text" class="form-control" th:field="*{imagen}" id="imagen" name="imagen"
-                   placeholder="Ingrese la URL de la imagen" required="required" oninput="updateImagePreview()">
-        </div>
-
-        <div class="mb-3">
-            <img id="imagenPreview" src="" alt="Vista previa de la imagen" style="max-width: 100%; display: none;"/>
-        </div>
-
-        <div id="actores-container">
+        <div id="actores-container" class="mb-3">
             <table class="table table-hover">
                 <thead class="thead-light">
                 <tr>
@@ -132,11 +144,11 @@
                 </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-secondary" onclick="addActor()">Añadir Actor</button>
+            <button type="button" class="btn btn-secondary mb-3" onclick="addActor()">Añadir Actor</button>
         </div>
 
 
-        <button type="submit" class="btn btn-dark">Guardar</button>
+        <button type="submit" class="btn btn-dark mt-3">Guardar</button>
         <input type="hidden" th:field="*{idPelicula}" />
     </form>
     <hr>
