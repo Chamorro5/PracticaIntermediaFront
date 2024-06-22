@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -78,7 +79,11 @@ public class ActoresController {
     public String editarPelicula(Model model, @PathVariable("id") Integer id) {
         Actor actor = actoresService.buscarActorPorId(id);
         model.addAttribute("titInicio", "Editar actor");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = actor.getFcNacimiento().format(formatter);
+
         model.addAttribute("actor", actor);
+        model.addAttribute("formattedDate", formattedDate);
         return "actores/formActor";
     }
 
