@@ -34,7 +34,8 @@ public class Pelicula {
             @JsonProperty("direccion") String direccion,
             @JsonProperty("genero") String genero,
             @JsonProperty("sinopsis") String sinopsis,
-            @JsonProperty("imagen") String imagen
+            @JsonProperty("imagen") String imagen,
+            @JsonProperty("actores") List<Actor> actores
     ) {
         this.idPelicula = idPelicula;
         this.titulo = titulo;
@@ -45,7 +46,7 @@ public class Pelicula {
         this.genero = genero;
         this.sinopsis = sinopsis;
         this.imagen = imagen;
-        this.actores = new ArrayList<>();
+        this.actores = actores != null ? actores : new ArrayList<>();
     }
 
     public void addActor(Actor actor) {

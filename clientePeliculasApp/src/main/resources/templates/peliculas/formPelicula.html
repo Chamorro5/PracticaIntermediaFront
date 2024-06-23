@@ -11,44 +11,6 @@
             min-height: 150px; /* Establece una altura mínima para el textarea */
         }
     </style>
-
-    <script th:inline="javascript">
-        function addActor() {
-            /* This function will submit the form to the same URL with a parameter to add a new actor */
-            let form = document.querySelector('form');
-            let action = form.action;
-            action += '?addActor=true';
-            form.action = action;
-            form.submit();
-        }
-
-        function removeActor(index) {
-            /* This function will submit the form to the same URL with a parameter to remove the actor */
-            let form = document.querySelector('form');
-            let action = form.action;
-            action += '?removeActor=' + index;
-            form.action = action;
-            form.submit();
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlField = document.getElementById('imagen').value;
-            if (urlField) {
-                updateImagePreview();
-            }
-        });
-
-        function updateImagePreview() {
-            const url = document.getElementById('imagen').value;
-            const img = document.getElementById('imagenPreview');
-            if (url) {
-                img.src = url;
-                img.style.display = 'block';
-            } else {
-                img.style.display = 'none';
-            }
-        }
-    </script>
 </head>
 <body>
 
@@ -121,25 +83,38 @@
                       placeholder="Escriba la sinopsis de la pelicula" required="required" rows="5"></textarea>
         </div>
 
-        <div id="actores-container" class="mb-3">
-            <table class="table table-hover">
+        <div class="mb-3">
+            <label for="actoresTable" class="form-label">Actores</label>
+            <table class="table table-hover" id="actoresTable">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">Identificador</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">Pais</th>
                     <th scope="col">Fecha de Nacimiento</th>
-                    <th scope="col">País</th>
                     <th scope="col">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="actor, iterStat : *{actores}">
-                    <td th:text="${actor.idActor}"></td>
-                    <td th:text="*{actores[__${iterStat.index}__].nombre}" placeholder="Nombre del actor"/></td>
-                    <td th:text="*{actores[__${iterStat.index}__].fcNacimiento}" placeholder="Fecha de nacimiento"/></td>
-                    <td th:text="*{actores[__${iterStat.index}__].pais}" placeholder="País"/></td>
+                <tr th:each="actor, iterStat : *{actores}" th:attr="data-actor-id=${actor.idActor}">
                     <td>
-                        <button type="button" class="btn btn-danger" th:onclick="|removeActor(${iterStat.index})|">Eliminar</button>
+                        <input type="hidden" th:field="*{actores[__${iterStat.index}__].idActor}" />
+                        <span th:text="${actor.idActor}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${actor.nombre}"></span>
+                        <input type="hidden" th:field="*{actores[__${iterStat.index}__].nombre}" />
+                    </td>
+                    <td>
+                        <span th:text="${actor.pais}"></span>
+                        <input type="hidden" th:field="*{actores[__${iterStat.index}__].pais}" />
+                    </td>
+                    <td>
+                        <span th:text="${actor.fcNacimiento}"></span>
+                        <input type="hidden" th:field="*{actores[__${iterStat.index}__].fcNacimiento}" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="removeActor(this)">Eliminar</button>
                     </td>
                 </tr>
                 </tbody>
@@ -150,6 +125,7 @@
 
         <button type="submit" class="btn btn-dark mt-3">Guardar</button>
         <input type="hidden" th:field="*{idPelicula}" />
+        <input type="hidden" name="deletedActors" id="deletedActors" />
     </form>
     <hr>
     <a class="btn btn-primary" role="button" th:href="@{/cpeliculas/}">Ir a Inicio</a>
@@ -159,6 +135,46 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script th:src="@{/js/bootstrap.min.js}"></script>
+
+<script>
+    let deletedActors = [];
+    function addActor() {
+        /* This function will submit the form to the same URL with a parameter to add a new actor */
+        let form = document.querySelector('form');
+        let action = form.action;
+        action += '?addActor=true';
+        form.action = action;
+        form.submit();
+    }
+
+    function removeActor(button) {
+        const row = button.parentNode.parentNode;
+        const actorId = row.getAttribute('data-actor-id');
+        if (actorId) {
+            deletedActors.push(actorId);
+        }
+        row.remove();
+        document.getElementById('deletedActors').value = deletedActors.join(',');
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlField = document.getElementById('imagen').value;
+        if (urlField) {
+            updateImagePreview();
+        }
+    });
+
+    function updateImagePreview() {
+        const url = document.getElementById('imagen').value;
+        const img = document.getElementById('imagenPreview');
+        if (url) {
+            img.src = url;
+            img.style.display = 'block';
+        } else {
+            img.style.display = 'none';
+        }
+    }
+</script>
 
 </body>
 </html>

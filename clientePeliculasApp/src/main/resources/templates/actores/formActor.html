@@ -46,7 +46,8 @@
         </div>
 
         <div id="peliculas-container" class="mb-3">
-            <table class="table table-hover">
+            <label for="peliculasTable" class="form-label">Peliculas</label>
+            <table class="table table-hover" id="peliculasTable">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">Identificador</th>
@@ -57,23 +58,35 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="pelicula, iterStat : *{peliculas}">
-                    <td th:text="${pelicula.idPelicula}"></td>
-                    <td class="imagen-col"> <img th:src="*{peliculas[__${iterStat.index}__].imagen}" th:alt="'Imagen de ' + *{peliculas[__${iterStat.index}__].titulo}" /></td>
-                    <td th:text="*{peliculas[__${iterStat.index}__].titulo}" placeholder="Titulo de la pelicula"/></td>
-                    <td th:text="*{peliculas[__${iterStat.index}__].genero}" placeholder="Genero"/></td>
+                <tr th:each="pelicula, iterStat : *{peliculas}" th:attr="data-pelicula-id=${pelicula.idPelicula}">
                     <td>
-                        <button type="button" class="btn btn-danger" th:onclick="|removeActor(${iterStat.index})|">Eliminar</button>
+                        <input type="hidden" th:field="*{peliculas[__${iterStat.index}__].idPelicula}" />
+                        <span th:text="${pelicula.idPelicula}"></span>
+                    </td>
+                    <td class="imagen-col">
+                        <img th:src="*{peliculas[__${iterStat.index}__].imagen}" th:alt="'Imagen de ' + *{peliculas[__${iterStat.index}__].titulo}" />
+                    </td>
+                    <td>
+                        <span th:text="*{peliculas[__${iterStat.index}__].titulo}" placeholder="Titulo de la pelicula"></span>
+                        <input type="hidden" th:field="*{peliculas[__${iterStat.index}__].titulo}" />
+                    </td>
+                    <td>
+                        <span th:text="*{peliculas[__${iterStat.index}__].genero}" placeholder="Genero"></span>
+                        <input type="hidden" th:field="*{peliculas[__${iterStat.index}__].genero}" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="removePelicula(this)">Eliminar</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-secondary mb-3" onclick="addActor()">Añadir Actor</button>
+            <button type="button" class="btn btn-secondary mb-3" onclick="addActor()">Añadir Pelicula</button>
         </div>
 
 
         <button type="submit" class="btn btn-dark mt-3">Guardar</button>
         <input type="hidden" th:field="*{idActor}" />
+        <input type="hidden" name="deletedPeliculas" id="deletedPeliculas" />
     </form>
     <hr>
     <a class="btn btn-primary" role="button" th:href="@{/cpeliculas/}">Ir a Inicio</a>
@@ -83,6 +96,25 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script th:src="@{/js/bootstrap.min.js}"></script>
+
+<script>
+    let deletedPeliculas = [];
+
+    function addPelicula() {
+        // Lógica para añadir una nueva película (puede abrir un modal o redirigir a una nueva página)
+        // Esto puede enviar una solicitud AJAX para agregar una nueva película
+    }
+
+    function removePelicula(button) {
+        const row = button.parentNode.parentNode;
+        const peliculaId = row.getAttribute('data-pelicula-id');
+        if (peliculaId) {
+            deletedPeliculas.push(peliculaId);
+        }
+        row.remove();
+        document.getElementById('deletedPeliculas').value = deletedPeliculas.join(',');
+    }
+</script>
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 package es.uah.clientePeliculasApp.service;
 
-import es.uah.clientePeliculasApp.model.Pelicula;
+import es.uah.clientePeliculasApp.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

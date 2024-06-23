@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/cactores")
@@ -68,7 +70,23 @@ public class ActoresController {
     }
 
     @PostMapping("/guardar/")
-    public String guardarActor(Model model, Actor actor, RedirectAttributes attributes) {
+    public String guardarActor(Model model, @ModelAttribute Actor actor, @RequestParam(name = "deletedPeliculas", required = false) String deletedPeliculas, RedirectAttributes attributes) {
+        if (deletedPeliculas != null && !deletedPeliculas.isEmpty()) {
+            List<Integer> deletedPeliculaIds = Arrays.stream(deletedPeliculas.split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+
+//            for (Integer deletedPeliculaId : deletedPeliculaIds) {
+//                actoresService.eliminarActorDePelicula(actor.getIdActor(), deletedPeliculaId);
+//            }
+            List<Pelicula> remainingPeliculas = actor.getPeliculas().stream()
+                    .filter(pelicula -> pelicula.getIdPelicula() != null)
+                    .filter(pelicula -> !deletedPeliculaIds.contains(pelicula.getIdPelicula()))
+                    .collect(Collectors.toList());
+
+            actor.setPeliculas(remainingPeliculas);
+        }
+
         actoresService.guardarActor(actor);
         model.addAttribute("titInicio", "Nuevo actor");
         attributes.addFlashAttribute("msg", "Los datos de la pelicula fueron guardados!");

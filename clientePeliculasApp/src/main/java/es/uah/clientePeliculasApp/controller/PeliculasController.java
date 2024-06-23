@@ -1,8 +1,8 @@
 package es.uah.clientePeliculasApp.controller;
 
-import es.uah.clientePeliculasApp.model.Pelicula;
-import es.uah.clientePeliculasApp.paginator.PageRender;
-import es.uah.clientePeliculasApp.service.IPeliculasService;
+import es.uah.clientePeliculasApp.model.*;
+import es.uah.clientePeliculasApp.paginator.*;
+import es.uah.clientePeliculasApp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +12,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/cpeliculas")
 public class PeliculasController {
 
     @Autowired
     IPeliculasService peliculasService;
+
+    @Autowired
+    IActoresService actoresService;
 
     @GetMapping(value = {"/", "/home", ""})
     public String home(Model model) {
@@ -99,10 +106,17 @@ public class PeliculasController {
     }
 
     @PostMapping("/guardar/")
-    public String guardarPelicula(Model model, Pelicula pelicula, RedirectAttributes attributes) {
-//    	if(curso != null) {	System.out.println(curso.getNombre()); }
+    public String guardarPelicula(Model model, @ModelAttribute Pelicula pelicula,  @RequestParam(name = "deletedActors", required = false) String deletedActors, RedirectAttributes attributes) {
+        if (deletedActors != null && !deletedActors.isEmpty()) {
+            List<Integer> deletedActorIds = Arrays.stream(deletedActors.split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+
+            for (Integer deletedActorId : deletedActorIds) {
+                actoresService.eliminarActorDePelicula(deletedActorId, pelicula.getIdPelicula());
+            }
+        }
         peliculasService.guardarPelicula(pelicula);
-        model.addAttribute("titInicio", "Nuevo pelicula");
         attributes.addFlashAttribute("msg", "Los datos de la pelicula fueron guardados!");
         return "redirect:/cpeliculas/listado";
     }

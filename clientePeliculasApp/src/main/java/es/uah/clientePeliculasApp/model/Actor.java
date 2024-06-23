@@ -26,13 +26,14 @@ public class Actor {
             @JsonProperty("idActor") Integer idActor,
             @JsonProperty("nombre") String nombre,
             @JsonProperty("fcNacimiento") LocalDate fcNacimiento,
-            @JsonProperty("pais") String pais
+            @JsonProperty("pais") String pais,
+            @JsonProperty("peliculas") List<Pelicula> peliculas // Añadir esta línea
     ) {
         this.idActor = idActor;
         this.nombre = nombre;
         this.fcNacimiento = fcNacimiento;
         this.pais = pais;
-        this.peliculas = new ArrayList<>();
+        this.peliculas = peliculas != null ? peliculas : new ArrayList<>();
     }
 
 }

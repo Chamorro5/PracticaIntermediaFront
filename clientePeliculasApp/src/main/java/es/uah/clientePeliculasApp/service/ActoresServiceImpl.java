@@ -80,8 +80,13 @@ public class ActoresServiceImpl implements IActoresService{
         }
     }
 
-    //@Override
-    //public void anyadirActorAPelicula(Integer idActor, Integer idPelicula) {
-    //    template.get
-    //}
+    @Override
+    public void anyadirActorAPelicula(Integer idActor, Integer idPelicula) {
+        template.delete(url + "/"  + idActor + "/pelicula/" + idPelicula );
+    }
+
+    @Override
+    public void eliminarActorDePelicula(Integer idActor, Integer idPelicula) {
+        template.delete(url + "/"  + idActor + "/pelicula/" + idPelicula );
+    }
 }
