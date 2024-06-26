@@ -43,6 +43,12 @@ public class ActoresServiceImpl implements IActoresService{
     }
 
     @Override
+    public List<Actor> buscarTodos() {
+        Actor[] actores = template.getForObject(url, Actor[].class);
+        return Arrays.asList(actores);
+    }
+
+    @Override
     public Actor buscarActorPorId(Integer idActor) {
         Actor actor = template.getForObject(url + "/" + idActor, Actor.class);
         return actor;
@@ -82,7 +88,8 @@ public class ActoresServiceImpl implements IActoresService{
 
     @Override
     public void anyadirActorAPelicula(Integer idActor, Integer idPelicula) {
-        template.delete(url + "/"  + idActor + "/pelicula/" + idPelicula );
+        String addActorToMovieUrl = url + "/" + idActor + "/pelicula/" + idPelicula;
+        template.postForObject(addActorToMovieUrl, null, Void.class);
     }
 
     @Override

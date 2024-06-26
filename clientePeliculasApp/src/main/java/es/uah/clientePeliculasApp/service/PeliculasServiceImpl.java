@@ -1,5 +1,6 @@
 package es.uah.clientePeliculasApp.service;
 
+import es.uah.clientePeliculasApp.model.Actor;
 import es.uah.clientePeliculasApp.model.Pelicula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,11 @@ public class PeliculasServiceImpl implements IPeliculasService {
 
         Page<Pelicula> page = new PageImpl<>(list, PageRequest.of(currentPage, pageSize), peliculasList.size());
         return page;
+    }
+
+    public List<Pelicula> buscarTodos() {
+        Pelicula[] peliculas = template.getForObject(url, Pelicula[].class);
+        return Arrays.asList(peliculas);
     }
 
     @Override

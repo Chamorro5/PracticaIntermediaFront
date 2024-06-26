@@ -80,9 +80,14 @@
                 </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-secondary mb-3" onclick="addActor()">Añadir Pelicula</button>
+            <div class="mb-3">
+                <label for="availablePeliculas" class="form-label">Películas Disponibles</label>
+                <select class="form-select" id="availablePeliculas" name="availablePeliculas">
+                    <option th:each="pelicula : ${availablePeliculas}" th:value="${pelicula.idPelicula}" th:text="${pelicula.titulo}"></option>
+                </select>
+                <button type="button" class="btn btn-secondary mb-3" onclick="addPelicula()">Añadir Película</button>
+            </div>
         </div>
-
 
         <button type="submit" class="btn btn-dark mt-3">Guardar</button>
         <input type="hidden" th:field="*{idActor}" />
@@ -101,8 +106,45 @@
     let deletedPeliculas = [];
 
     function addPelicula() {
-        // Lógica para añadir una nueva película (puede abrir un modal o redirigir a una nueva página)
-        // Esto puede enviar una solicitud AJAX para agregar una nueva película
+        const select = document.getElementById('availablePeliculas');
+        const peliculaId = select.value;
+        const peliculaTitulo = select.options[select.selectedIndex].text;
+
+        if (!peliculaId) {
+            return;
+        }
+
+        const tableBody = document.querySelector('#peliculasTable tbody');
+        const rowCount = tableBody.rows.length;
+
+        const row = document.createElement('tr');
+        row.setAttribute('data-pelicula-id', peliculaId);
+
+        row.innerHTML = `
+            <td>
+                <input type="hidden" name="peliculas[${rowCount}].idPelicula" value="${peliculaId}" />
+                <span>${peliculaId}</span>
+            </td>
+            <td class="imagen-col">
+                <img src="" alt="Imagen de ${peliculaTitulo}" />
+            </td>
+            <td>
+                <input type="hidden" name="peliculas[${rowCount}].titulo" value="${peliculaTitulo}" />
+                <span>${peliculaTitulo}</span>
+            </td>
+            <td>
+                <input type="hidden" name="peliculas[${rowCount}].genero" value="" />
+                <span></span>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger" onclick="removePelicula(this)">Eliminar</button>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+
+        // Remove the added pelicula from the select options
+        select.remove(select.selectedIndex);
     }
 
     function removePelicula(button) {

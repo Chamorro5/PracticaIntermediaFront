@@ -119,7 +119,18 @@
                 </tr>
                 </tbody>
             </table>
-            <button type="button" class="btn btn-secondary mb-3" onclick="addActor()">Añadir Actor</button>
+            <div class="row mb-3">
+                <label for="availableActors" class="form-label">Actores Disponibles</label>
+                <div class="col-md-10">
+                    <select class="form-select" id="availableActors" name="availableActors">
+                        <option th:each="actor : ${availableActors}" th:value="${actor.idActor}" th:text="${actor.nombre}"></option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary mb-3" onclick="addActor()">Añadir Actor</button>
+                </div>
+            </div>
+
         </div>
 
 
@@ -139,12 +150,41 @@
 <script>
     let deletedActors = [];
     function addActor() {
-        /* This function will submit the form to the same URL with a parameter to add a new actor */
-        let form = document.querySelector('form');
-        let action = form.action;
-        action += '?addActor=true';
-        form.action = action;
-        form.submit();
+        const select = document.getElementById('availableActors');
+        const actorId = select.value;
+        const actorName = select.options[select.selectedIndex].text;
+
+        if (!actorId) {
+            return;
+        }
+
+        const tableBody = document.querySelector('#actoresTable tbody');
+        const row = document.createElement('tr');
+        row.setAttribute('data-actor-id', actorId);
+
+        row.innerHTML = `
+            <td>
+                <input type="hidden" name="actores[${actorId}].idActor" value="${actorId}" />
+                <span>${actorId}</span>
+            </td>
+            <td>
+                <input type="hidden" name="actores[${actorId}].nombre" value="${actorName}" />
+                <span>${actorName}</span>
+            </td>
+            <td>
+                <span></span>
+                <input type="hidden" name="actores[${actorId}].pais" value="" />
+            </td>
+            <td>
+                <span></span>
+                <input type="hidden" name="actores[${actorId}].fcNacimiento" value="" />
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger" onclick="removeActor(this)">Eliminar</button>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
     }
 
     function removeActor(button) {

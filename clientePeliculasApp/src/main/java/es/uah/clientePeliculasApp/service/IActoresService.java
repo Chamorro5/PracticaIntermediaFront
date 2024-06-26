@@ -9,6 +9,7 @@ import java.util.List;
 public interface IActoresService {
 
     Page<Actor> buscarTodos(Pageable pageable);
+    List<Actor> buscarTodos();
     Actor buscarActorPorId(Integer idActor);
     Actor buscarActorPorNombre(String nombre);
     void guardarActor(Actor actor);

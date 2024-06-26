@@ -26,6 +26,9 @@ public class ActoresController {
     @Autowired
     IActoresService actoresService;
 
+    @Autowired
+    IPeliculasService peliculasService;
+
     @GetMapping(value = {"/", "/home", ""})
     public String home(Model model) {
         return "home";
@@ -36,6 +39,14 @@ public class ActoresController {
         model.addAttribute("titInicio", "Añadir actor");
         Actor actor = new Actor();
         model.addAttribute("actor", actor);
+        List<Integer> peliculasIds = actor.getPeliculas().stream()
+                .map(Pelicula::getIdPelicula).toList();
+
+        List<Pelicula> availablePeliculas = peliculasService.buscarTodos()
+                .stream()
+                .filter(pelicula -> !peliculasIds.contains(pelicula.getIdPelicula())).toList();
+
+        model.addAttribute("availablePeliculas", availablePeliculas);
         return "actores/formActor";
     }
 
@@ -71,6 +82,18 @@ public class ActoresController {
 
     @PostMapping("/guardar/")
     public String guardarActor(Model model, @ModelAttribute Actor actor, @RequestParam(name = "deletedPeliculas", required = false) String deletedPeliculas, RedirectAttributes attributes) {
+
+        List<Pelicula> addedPeliculas = actor.getPeliculas().stream().filter(pelicula -> pelicula.getIdPelicula() != null && pelicula.getGenero() == null).toList();
+
+        addedPeliculas.forEach(addedPelicula -> actoresService.anyadirActorAPelicula(actor.getIdActor(), addedPelicula.getIdPelicula()));
+
+//        actor.getPeliculas().forEach(pelicula -> {
+//            if (pelicula.getIdPelicula() == null) {
+//                peliculasService.guardarPelicula(pelicula);  // guardar nueva película y obtener su ID
+//            }
+//            actoresService.anyadirActorAPelicula(pelicula.getIdPelicula(), actor.getIdActor());
+//        });
+
         if (deletedPeliculas != null && !deletedPeliculas.isEmpty()) {
             List<Integer> deletedPeliculaIds = Arrays.stream(deletedPeliculas.split(","))
                     .map(Integer::parseInt)
@@ -100,6 +123,14 @@ public class ActoresController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = actor.getFcNacimiento().format(formatter);
 
+        List<Integer> peliculasIds = actor.getPeliculas().stream()
+                .map(Pelicula::getIdPelicula).toList();
+
+        List<Pelicula> availablePeliculas = peliculasService.buscarTodos()
+                .stream()
+                .filter(pelicula -> !peliculasIds.contains(pelicula.getIdPelicula())).toList();
+
+        model.addAttribute("availablePeliculas", availablePeliculas);
         model.addAttribute("actor", actor);
         model.addAttribute("formattedDate", formattedDate);
         return "actores/formActor";

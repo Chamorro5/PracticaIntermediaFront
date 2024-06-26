@@ -36,6 +36,15 @@ public class PeliculasController {
         model.addAttribute("titInicio", "Añadir pelicula");
         Pelicula pelicula = new Pelicula();
         model.addAttribute("pelicula", pelicula);
+        List<Integer> actoresIds = pelicula.getActores().stream()
+                .map(Actor::getIdActor)
+                .collect(Collectors.toList());
+
+        List<Actor> availableActors = actoresService.buscarTodos()
+                .stream()
+                .filter(actor -> !actoresIds.contains(actor.getIdActor()))
+                .collect(Collectors.toList());
+        model.addAttribute("availableActors", availableActors);
         return "peliculas/formPelicula";
     }
 
@@ -107,6 +116,11 @@ public class PeliculasController {
 
     @PostMapping("/guardar/")
     public String guardarPelicula(Model model, @ModelAttribute Pelicula pelicula,  @RequestParam(name = "deletedActors", required = false) String deletedActors, RedirectAttributes attributes) {
+
+        List<Actor> addedActors = pelicula.getActores().stream().filter(actor -> actor.getIdActor() != null && (actor.getPais() == null || actor.getFcNacimiento() == null)).toList();
+
+        addedActors.forEach(addedActor -> actoresService.anyadirActorAPelicula(addedActor.getIdActor(), pelicula.getIdPelicula()));
+
         if (deletedActors != null && !deletedActors.isEmpty()) {
             List<Integer> deletedActorIds = Arrays.stream(deletedActors.split(","))
                     .map(Integer::parseInt)
@@ -116,6 +130,7 @@ public class PeliculasController {
                 actoresService.eliminarActorDePelicula(deletedActorId, pelicula.getIdPelicula());
             }
         }
+
         peliculasService.guardarPelicula(pelicula);
         attributes.addFlashAttribute("msg", "Los datos de la pelicula fueron guardados!");
         return "redirect:/cpeliculas/listado";
@@ -126,6 +141,15 @@ public class PeliculasController {
         Pelicula pelicula = peliculasService.buscarPeliculaPorId(id);
         model.addAttribute("titInicio", "Editar pelicula");
         model.addAttribute("pelicula", pelicula);
+        List<Integer> actoresIds = pelicula.getActores().stream()
+                .map(Actor::getIdActor)
+                .collect(Collectors.toList());
+
+        List<Actor> availableActors = actoresService.buscarTodos()
+                .stream()
+                .filter(actor -> !actoresIds.contains(actor.getIdActor()))
+                .collect(Collectors.toList());
+        model.addAttribute("availableActors", availableActors);
         return "peliculas/formPelicula";
     }
 

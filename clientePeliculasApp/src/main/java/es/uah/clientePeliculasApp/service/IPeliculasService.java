@@ -4,8 +4,11 @@ import es.uah.clientePeliculasApp.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface IPeliculasService {
     Page<Pelicula> buscarTodos(Pageable pageable);
+    List<Pelicula> buscarTodos();
     Pelicula buscarPeliculaPorId(Integer idPelicula);
     Page<Pelicula> buscarPeliculasPorTitulo(String titulo, Pageable pageable);
     Page<Pelicula> buscarPeliculasPorGenero(String genero, Pageable pageable);
