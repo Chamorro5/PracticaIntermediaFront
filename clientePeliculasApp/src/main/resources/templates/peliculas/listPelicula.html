@@ -49,8 +49,8 @@
                     <td th:text="${pelicula.genero}"></td>
                     <td th:text="${pelicula.sinopsis}" class="sinopsis-col"></td>
                     <td>
-                        <a th:href="@{/cpeliculas/editar/{id}  (id=${pelicula.idPelicula})  }" th:text="'editar'" class="btn btn-success btn-sm" role="button" title="Editar el curso."><i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
-                        <a th:href="@{/cpeliculas/borrar/{id}  (id=${pelicula.idPelicula})   }" th:text="'borrar'" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Eliminar el curso."><i class="fas fa-trash" aria-hidden="true"></i></a>
+                        <a th:href="@{/cpeliculas/editar/{id}  (id=${pelicula.idPelicula})  }" th:text="'editar'" class="btn btn-success btn-sm" role="button" title="Editar la pelicula."><i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
+                        <a th:href="@{/cpeliculas/borrar/{id}  (id=${pelicula.idPelicula})   }" th:text="'borrar'" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Eliminar la pelicula."><i class="fas fa-trash" aria-hidden="true"></i></a>
                     </td>
                 </tr>
 
